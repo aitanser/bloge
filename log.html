@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日志 · 鸿渚の灵质空间</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/fontawesome/all.min.css">
+    <link rel="stylesheet" href="common.css">
+    <script>
+        document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+        document.documentElement.style.setProperty('--glass-alpha', (localStorage.getItem('hz_glass_alpha') || 65) / 100);
+    </script>
+    <style>
+        /* 强行约束顶部按钮尺寸 */
+        .nav-actions .icon-btn { width: 32px !important; height: 32px !important; padding: 0 !important; display: inline-flex !important; align-items: center; justify-content: center; }
+        .nav-actions .icon-btn i { font-size: 0.95rem !important; }
+        .main-container { max-width: 1200px; margin: 90px auto 60px; padding: 0 1.5rem; }
+    </style>
+</head>
+<body>
+<div class="bg-layer"></div>
+
+<!-- 硬编码导航栏（全站通用） -->
+<header class="top-bar" id="mainTopBar">
+    <div class="top-bar-inner">
+        <a href="index.html" class="site-brand" aria-label="返回首页">
+            <img src="img/logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'">
+            <span class="brand-title">鸿渚の灵质空间</span>
+        </a>
+        <nav class="primary-nav" aria-label="主导航">
+            <a href="index.html" class="nav-link" data-nav="home">
+                <i class="fas fa-house"></i> <span>首页</span>
+            </a>
+            <a href="background.html" class="nav-link" data-nav="background">
+                <i class="fas fa-images"></i> <span>图片库</span>
+            </a>
+            <a href="emoji.html" class="nav-link" data-nav="emoji">
+                <i class="fas fa-face-smile"></i> <span>表情包</span>
+            </a>
+            <div class="nav-link-wrapper">
+                <a href="#" class="nav-link" id="playerToggleBtn">
+                    <i class="fas fa-headphones"></i> <span>播放器</span>
+                </a>
+            </div>
+        </nav>
+        <div class="nav-actions">
+            <button class="icon-btn" id="themeQuickBtn" type="button" aria-label="切换明暗主题" style="width:32px;height:32px;">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main class="main-container">
+    <div style="text-align:center;padding:4rem;background:var(--bg-card);border-radius:20px;border:1px solid var(--border-light);"><h2>log 页面维护中</h2></div>
+</main>
+
+<!-- 页脚 -->
+<footer style="text-align:center; padding:2rem 0; color:var(--text-muted); border-top:1px solid var(--border-light); margin-top:2rem;">
+    <p>© 2025-2026 鸿渚の灵质空间</p>
+</footer>
+
+<script>
+    // 高亮当前页面导航
+    (function() {
+        var path = window.location.pathname.split('/').pop().replace('.html', '');
+        if (!path) path = 'home';
+        var navs = document.querySelectorAll('.nav-link[data-nav]');
+        for (var i = 0; i < navs.length; i++) {
+            if (navs[i].getAttribute('data-nav') === path) navs[i].classList.add('active');
+        }
+    })();
+
+    // 明暗切换
+    document.getElementById('themeQuickBtn')?.addEventListener('click', function() {
+        var cur = document.documentElement.getAttribute('data-theme');
+        var next = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        
+        var icon = this.querySelector('i');
+        if (icon) icon.className = next === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    });
+
+    // 初始化图标
+    (function() {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        var icon = document.querySelector('#themeQuickBtn i');
+        if (icon) icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+    })();
+</script>
+<script src="common.js"></script>
+</body>
+</html>

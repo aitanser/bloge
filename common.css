@@ -1,0 +1,263 @@
+/* ============================================
+   鸿渚の灵质空间 - 全局样式表
+   ============================================ */
+:root {
+    --primary-400: #22d3ee; --primary-500: #06b6d4; --primary-600: #0891b2;
+    --bg-page: #f4f6fa; --bg-card: #ffffff;
+    --text-title: #0f172a; --text-desc: #334155; --text-muted: #5f6c80;
+    --border-light: #e9edf2;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.02);
+    --shadow-md: 0 4px 12px rgba(0,20,40,0.06);
+    --shadow-hover: 0 12px 24px -8px rgba(6,182,212,0.15);
+    --radius-card: 20px; --transition: all 0.2s ease;
+    --glass-alpha: 0.65;
+}
+[data-theme="dark"] {
+    --primary-400: #38bdf8; --primary-500: #0ea5e9; --primary-600: #0284c7;
+    /* 纯黑底色 + 稍亮一点的卡片色，区分层次 */
+    --bg-page: #0a0f1c; 
+    --bg-card: #1e293b;
+    /* 文字颜色调得更亮，提高可读性 */
+    --text-title: #f8fafc; 
+    --text-desc: #e2e8f0; 
+    --text-muted: #94a3b8;
+    /* 边框稍微亮一点，更有轮廓感 */
+    --border-light: #334155;
+    /* 暗色毛玻璃背景增加一点亮度与不透明底 */
+    --glass-bg: rgba(30, 41, 59, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.12);
+}
+/* 多色主题 */
+[data-color-theme="purple"] { --primary-400: #c084fc; --primary-500: #a855f7; --primary-600: #9333ea; }
+[data-color-theme="purple"][data-theme="dark"] { --primary-400: #a78bfa; --primary-500: #8b5cf6; --primary-600: #7c3aed; }
+[data-color-theme="mint"] { --primary-400: #34d399; --primary-500: #10b981; --primary-600: #059669; }
+[data-color-theme="mint"][data-theme="dark"] { --primary-400: #2dd4bf; --primary-500: #14b8a6; --primary-600: #0d9488; }
+[data-color-theme="sunset"] { --primary-400: #fb923c; --primary-500: #f97316; --primary-600: #ea580c; }
+[data-color-theme="sunset"][data-theme="dark"] { --primary-400: #fdba74; --primary-500: #fb923c; --primary-600: #f97316; }
+[data-color-theme="sakura"] { --primary-400: #f9a8d4; --primary-500: #f472b6; --primary-600: #ec4899; }
+[data-color-theme="sakura"][data-theme="dark"] { --primary-400: #fbcfe8; --primary-500: #f9a8d4; --primary-600: #f472b6; }
+
+*,*::before,*::after{ margin:0; padding:0; box-sizing:border-box; }
+body{ font-family:'Inter',sans-serif; background:var(--bg-page); color:var(--text-title); line-height:1.5; overflow-x:hidden; }
+.bg-layer{ position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; opacity:0.08; }
+
+/* 全局光标 */
+* { cursor: url('img/zhengchang_luoxiaohei.gif') 16 16, auto; }
+a, button, .btn, .card, .icon-btn { cursor: url('img/zhengchang_luoxiaohei.gif') 16 16, pointer !important; }
+
+/* 卡片基础 */
+.profile-card, .side-card, .article-card, .card-item, .file-item, .latest-video-card {
+    background: var(--bg-card); border: 1px solid var(--border-light);
+    border-radius: var(--radius-card); box-shadow: var(--shadow-sm); transition: var(--transition);
+}
+.profile-card:hover, .side-card:hover, .article-card:hover, .card-item:hover, .file-item:hover {
+    border-color: var(--primary-400); box-shadow: var(--shadow-hover); transform: translateY(-2px);
+}
+/* 毛玻璃 */
+body[data-glass="true"] .profile-card,
+body[data-glass="true"] .side-card,
+body[data-glass="true"] .article-card,
+body[data-glass="true"] .card-item,
+body[data-glass="true"] .file-item,
+body[data-glass="true"] .latest-video-card {
+    background: rgba(255, 255, 255, var(--glass-alpha)) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+}
+[data-theme="dark"][data-glass="true"] .profile-card,
+[data-theme="dark"][data-glass="true"] .side-card,
+[data-theme="dark"][data-glass="true"] .article-card,
+[data-theme="dark"][data-glass="true"] .card-item,
+[data-theme="dark"][data-glass="true"] .file-item,
+[data-theme="dark"][data-glass="true"] .latest-video-card {
+    background: rgba(30, 41, 59, var(--glass-alpha)) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 导航栏 */
+.top-bar { position:fixed; top:0; left:0; width:100%; height:64px; background:rgba(255,255,255,0.8); backdrop-filter:blur(20px); border-bottom:1px solid var(--border-light); z-index:100; }
+[data-theme="dark"] .top-bar { background:rgba(15,23,42,0.8); }
+.top-bar-inner { max-width:1200px; height:100%; margin:0 auto; padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; }
+.site-brand { display:flex; align-items:center; gap:8px; text-decoration:none; color:var(--primary-600); font-weight:700; font-size:1.2rem; }
+.site-brand img { height:2.2rem; }
+.primary-nav { display:flex; gap:8px; }
+.nav-link { display:flex; align-items:center; gap:6px; padding:8px 14px; border-radius:10px; text-decoration:none; color:var(--text-title); font-size:0.9rem; font-weight:500; }
+.nav-link:hover, .nav-link.active { background:rgba(6,182,212,0.1); color:var(--primary-600); }
+[data-theme="dark"] .nav-link { color:#e2e8f0; }
+.icon-btn { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; border:none; background:transparent; color:var(--text-title); }
+
+/* 播放器外壳 */
+.floating-player { position:fixed; width:780px; height:480px; background:#0f172a; border:1px solid var(--primary-500); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; z-index:9999; opacity:0; visibility:hidden; transition:0.25s; }
+.floating-player.show { opacity:1; visibility:visible; }
+.player-titlebar { height:38px; background:#1f2937; color:#eef5ff; display:flex; justify-content:space-between; align-items:center; padding:0 12px; border-bottom:1px solid var(--primary-500); }
+.win-btn { background:none; border:none; color:var(--primary-400); font-size:1.1rem; cursor:pointer; }
+.player-content { flex:1; position:relative; }
+.player-content iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
+
+/* 状态框 */
+.loading-skeleton, .empty-state { padding:12px; background:var(--bg-card); border-left:3px solid var(--primary-500); border-radius:8px; color:var(--text-muted); font-size:0.9rem; }
+.tag-badge { display:inline-block; background:var(--primary-500); color:white; padding:2px 8px; border-radius:12px; font-size:0.7rem; margin-right:4px; }
+
+/* 响应式 */
+@media (max-width: 800px) {
+    .primary-nav { display: none; }
+    .floating-player { width: 95vw !important; height: 80vh !important; left: 2.5vw !important; top: 10vh !important; }
+}
+
+/* ================= 悬浮迷你音乐卡片 ================= */
+.mini-player-card {
+    position: fixed;
+    bottom: 80px; 
+    right: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px 10px 10px;
+    background: var(--bg-card);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--border-light);
+    border-radius: 40px;
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    z-index: 990;
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+[data-theme="dark"] .mini-player-card {
+    background: rgba(30, 41, 59, 0.85);
+    border-color: #334155;
+}
+.mini-player-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--primary-400);
+}
+.mini-cover {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg-page);
+    border: 2px solid var(--primary-500);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-500);
+    font-size: 1.2rem;
+    overflow: hidden;
+}
+.mini-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.mini-cover i {
+    animation: spin 4s linear infinite;
+    animation-play-state: paused;
+}
+.mini-player-card:hover .mini-cover i,
+.mini-player-card.playing .mini-cover i {
+    animation-play-state: running;
+}
+.mini-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-title);
+    white-space: nowrap;
+    margin-right: 8px;
+}
+.mini-wave {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 14px;
+}
+.mini-wave span {
+    display: block;
+    width: 3px;
+    background: var(--primary-500);
+    border-radius: 2px;
+    animation: wave 1.2s ease-in-out infinite;
+    height: 4px;
+}
+.mini-wave span:nth-child(1) { animation-delay: 0s; }
+.mini-wave span:nth-child(2) { animation-delay: 0.2s; }
+.mini-wave span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes wave {
+    0%, 100% { height: 4px; }
+    50% { height: 14px; }
+}
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+@media (max-width: 700px) {
+    .mini-player-card { bottom: 70px; right: 16px; padding: 8px 12px 8px 8px; }
+    .mini-text { display: none; }
+}
+
+/* 强化暗色卡片悬浮感 */
+
+
+/* 迷你播放器暂停状态 */
+.mini-player-card:not(.playing) .mini-wave span {
+    animation-play-state: paused;
+    height: 4px !important;
+}
+.mini-player-card:not(.playing) .mini-cover i {
+    animation-play-state: paused;
+}
+.mini-text {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ================= 绝对强化的暗色模式对比度 ================= */
+/* 1. 强制卡片基础背景 */
+[data-theme="dark"] .profile-card,
+[data-theme="dark"] .side-card,
+[data-theme="dark"] .article-card,
+[data-theme="dark"] .card-item,
+[data-theme="dark"] .file-item,
+[data-theme="dark"] .latest-video-card {
+    background-color: #1e293b !important; 
+    border-color: #334155 !important;
+}
+
+/* 2. 强制毛玻璃在暗色下的背景 */
+[data-theme="dark"][data-glass="true"] .profile-card,
+[data-theme="dark"][data-glass="true"] .side-card,
+[data-theme="dark"][data-glass="true"] .article-card,
+[data-theme="dark"][data-glass="true"] .card-item,
+[data-theme="dark"][data-glass="true"] .file-item,
+[data-theme="dark"][data-glass="true"] .latest-video-card {
+    background-color: rgba(30, 41, 59, 0.85) !important;
+    backdrop-filter: blur(20px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(150%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 3. 彻底解决白字瞎眼：强制标题和文字颜色 */
+[data-theme="dark"] .article-card h3,
+[data-theme="dark"] .card-item h3,
+[data-theme="dark"] .file-item h3,
+[data-theme="dark"] .profile-card h2 {
+    color: #f8fafc !important; /* 极亮白色 */
+}
+
+[data-theme="dark"] .article-card p,
+[data-theme="dark"] .card-item p,
+[data-theme="dark"] .file-item p,
+[data-theme="dark"] .profile-bio {
+    color: #cbd5e1 !important; /* 浅灰白 */
+}
+
+[data-theme="dark"] .article-card div,
+[data-theme="dark"] .card-item div,
+[data-theme="dark"] .file-item div {
+    color: #94a3b8 !important; /* 日期等次要信息用暗灰 */
+}
+
+/* 侧边栏的项目链接与小纸条 */
+[data-theme="dark"] .project-links a { color: var(--primary-400) !important; }
+[data-theme="dark"] .notif-item { color: #cbd5e1 !important; border-left-color: var(--primary-500) !important; }

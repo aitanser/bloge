@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鸿渚の灵质空间</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="common.css">
+    <script>
+        var isDark = localStorage.getItem('theme') === 'dark';
+        document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+        document.documentElement.setAttribute('data-color-theme', localStorage.getItem('colorTheme') || 'default');
+        
+        document.documentElement.style.setProperty('--glass-alpha', (localStorage.getItem('hz_glass_alpha') || 65) / 100);
+    </script>
+    <style>
+        .main-container { max-width: 1200px; margin: 90px auto 60px; padding: 0 1.5rem; display: flex; gap: 2rem; align-items: flex-start; }
+        .sidebar { width: 300px; flex-shrink: 0; position: sticky; top: 100px; }
+        .content { flex: 1; min-width: 0; }
+        @media (max-width: 850px) { .main-container { flex-direction: column; } .sidebar { width: 100%; position: relative; top: 0; } }
+        .notif-item { font-size: 0.85rem; color: var(--text-desc); padding-left: 1rem; border-left: 3px solid var(--primary-400); margin-bottom: 0.5rem; }
+        .project-links a { color: var(--primary-500); text-decoration: none; display: flex; align-items: center; gap: 6px; padding: 4px 0; font-size: 0.9rem; }
+        .grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    </style>
+</head>
+<body>
+<main class="main-container">
+    <aside class="sidebar">
+        <!-- 个人信息卡片 -->
+        <div class="profile-card" id="profileCard" style="padding: 2rem; text-align: center; margin-bottom: 1.8rem;">
+            <img class="profile-avatar" id="profileAvatar" src="img/logo.png" style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary-500); margin-bottom: 1rem; object-fit: cover;">
+            <h2 id="profileName" style="font-size: 1.6rem; margin-bottom: 0.3rem; color: var(--primary-600);">鸿渚</h2>
+            <p class="profile-bio" id="profileBio" style="color: var(--text-muted); margin-bottom: 0.5rem; font-size: 0.9rem;">历史、地理、文学、音乐、编程爱好者</p>
+            <span class="profile-level" id="profileLevel" style="display: inline-block; background: var(--primary-500); color: white; padding: 2px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem;">LV 0</span>
+            <div class="profile-extras" id="profileExtras" style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;"></div>
+            
+            <div class="stats-row" style="display: flex; justify-content: space-around; gap: 0.5rem; padding: 1rem 0; margin: 1rem 0; border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
+                <div class="stat-item" style="text-align: center;">
+                    <div class="stat-value" id="statFollowers" style="font-size: 1.3rem; font-weight: 700; color: var(--primary-600);">--</div>
+                    <div class="stat-label" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">粉丝</div>
+                </div>
+                <div class="stat-item" style="text-align: center;">
+                    <div class="stat-value" id="statFollowing" style="font-size: 1.3rem; font-weight: 700; color: var(--primary-600);">--</div>
+                    <div class="stat-label" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">关注</div>
+                </div>
+                <div class="stat-item" style="text-align: center;">
+                    <div class="stat-value" id="statLikes" style="font-size: 1.3rem; font-weight: 700; color: var(--primary-600);">--</div>
+                    <div class="stat-label" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">获赞</div>
+                </div>
+                <div class="stat-item" style="text-align: center;">
+                    <div class="stat-value" id="statViews" style="font-size: 1.3rem; font-weight: 700; color: var(--primary-600);">--</div>
+                    <div class="stat-label" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">播放量</div>
+                </div>
+            </div>
+            
+            <div class="social-links" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 1.5rem; margin-bottom: 0.5rem;">
+                <a href="https://space.bilibili.com/3493109964999279" target="_blank" style="background: #fb7299; color: white; padding: 10px; border-radius: 40px; text-decoration: none; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 6px;"><i class="fab fa-bilibili"></i> B站</a>
+                <a href="https://github.com/WatchFleeting" target="_blank" style="background: #24292f; color: white; padding: 10px; border-radius: 40px; text-decoration: none; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 6px;"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://afdian.com/a/lyxh-took" target="_blank" style="grid-column: span 2; background: #946ce6; color: white; padding: 10px; border-radius: 40px; text-decoration: none; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 6px;"><i class="fas fa-bolt"></i> 爱发电赞助</a>
+            </div>
+        </div>
+
+        <!-- 最新视频卡片 -->
+        <div class="latest-video-card" id="latestVideoCard" style="display:none; padding:1rem; margin-bottom:1.2rem;">
+            <h4 style="margin-bottom:0.5rem;font-size:0.8rem;color:var(--text-muted);"><i class="fas fa-video"></i> 最新视频</h4>
+            <a id="latestVideoLink" href="#" target="_blank" style="text-decoration:none;color:inherit;">
+                <img id="latestVideoPic" src="" style="width:100%;border-radius:12px; margin-bottom:0.5rem;">
+                <h4 id="latestVideoTitle" style="font-size:0.9rem;color:var(--text-title); margin-bottom:0.3rem;"></h4>
+                <span class="video-meta" id="latestVideoMeta" style="font-size:0.75rem; color:var(--text-muted);"></span>
+            </a>
+        </div>
+
+        <!-- 动态通知卡片 -->
+        <div class="side-card" style="padding:1.4rem; margin-bottom:1.2rem;">
+            <h3 style="font-size:1rem; font-weight:700; color:var(--primary-600); margin-bottom:0.6rem;"><i class="fas fa-bell"></i> 小纸条</h3>
+            <div id="notifList" class="loading-skeleton">加载中...</div>
+        </div>
+
+        <!-- 动态项目卡片 -->
+        <div class="side-card" style="padding:1.4rem;">
+            <h3 style="font-size:1rem; font-weight:700; color:var(--primary-600); margin-bottom:0.6rem;"><i class="fas fa-folder"></i> 小巢分站</h3>
+            <div id="projectLinks" class="project-links"><div class="loading-skeleton">加载中...</div></div>
+        </div>
+    </aside>
+
+    <section class="content">
+        <h2 style="margin-bottom: 1.2rem; font-size: 1.4rem; color: var(--primary-600); display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-feather-alt"></i> 最新文章</h2>
+        <div id="articlesContainer" class="grid-layout"><div class="loading-skeleton">加载中...</div></div>
+        
+        <h2 style="margin-bottom: 1.2rem; font-size: 1.4rem; color: var(--primary-600); display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-tools"></i> 工具 & 资源</h2>
+        <div id="cardsContainer" class="grid-layout"><div class="loading-skeleton">加载中...</div></div>
+
+        <h2 style="margin-bottom: 1.2rem; font-size: 1.4rem; color: var(--primary-600); display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-file-alt"></i> 相关文件</h2>
+        <div id="filesContainer" class="grid-layout"><div class="loading-skeleton">加载中...</div></div>
+    </section>
+</main>
+
+<!-- 浮动播放器 -->
+<div id="floatingPlayer" class="floating-player">
+    <div class="player-titlebar"><span>音乐</span><button class="win-btn" id="winCloseBtn">✕</button></div>
+    <div class="player-content"><iframe id="playerIframe" src="about:blank"></iframe></div>
+</div>
+
+<script src="common.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        // --- 1. 侧边栏数据加载 ---
+        loadJSON('data/notifications.json').then(function(data) {
+            var el = document.getElementById('notifList');
+            if (!data || !data.length) { el.innerHTML = '<div class="empty-state">暂无通知</div>'; return; }
+            el.innerHTML = data.map(function(msg){ return '<div class="notif-item">' + escapeHtml(msg) + '</div>'; }).join('');
+        });
+
+        loadJSON('data/projects.json').then(function(data) {
+            var el = document.getElementById('projectLinks');
+            if (!data || !data.length) { el.innerHTML = '<div class="empty-state">暂无链接</div>'; return; }
+            el.innerHTML = data.map(function(p){ return '<a href="' + p.url + '" target="_blank">' + escapeHtml(p.name) + '</a>'; }).join('');
+        });
+
+        // --- 2. B站数据加载 ---
+        if (typeof fetchBilibiliFullProfile === 'function') {
+            fetchBilibiliFullProfile('3493109964999279').then(function(profile) {
+                if (profile.avatar) document.getElementById('profileAvatar').src = profile.avatar;
+                if (profile.name) document.getElementById('profileName').textContent = profile.name;
+                if (profile.sign) document.getElementById('profileBio').textContent = profile.sign;
+                if (profile.level) document.getElementById('profileLevel').textContent = 'LV ' + profile.level;
+                
+                function fmt(n) { return typeof n === 'number' && n >= 10000 ? (n/10000).toFixed(1)+'万' : String(n); }
+                document.getElementById('statFollowers').textContent = fmt(profile.follower);
+                document.getElementById('statFollowing').textContent = fmt(profile.following);
+                document.getElementById('statLikes').textContent = fmt(profile.likes);
+                document.getElementById('statViews').textContent = fmt(profile.archiveView);
+
+                if (profile.latestVideo) {
+                    var v = profile.latestVideo;
+                    document.getElementById('latestVideoCard').style.display = 'block';
+                    document.getElementById('latestVideoLink').href = 'https://www.bilibili.com/video/' + v.bvid;
+                    document.getElementById('latestVideoPic').src = v.pic;
+                    document.getElementById('latestVideoTitle').textContent = v.title.length > 20 ? v.title.slice(0, 20) + '...' : v.title;
+                }
+            }).catch(function(e) { console.warn('B站拉取失败', e); });
+        }
+
+        // --- 3. Markdown 内容加载 ---
+        function bindClicks(containerId, selector, items) {
+            var container = document.getElementById(containerId);
+            if(!container) return;
+            var els = container.querySelectorAll(selector);
+            for (var i = 0; i < els.length; i++) {
+                (function(idx) {
+                    els[idx].onclick = function() {
+                        var it = items[idx];
+                        showArticleDetail(it.meta.title || '', it.meta.date || '', it.content, it.meta);
+                    };
+                })(i);
+            }
+        }
+
+        loadJSON('data-index.json').then(async function(idx) {
+            // 文章
+            var arts = [];
+            if (idx.articles) for (var p of idx.articles) { var a = await loadMarkdownArticle(p); if(a) arts.push(a); }
+            var ac = document.getElementById('articlesContainer');
+            if (arts.length === 0) ac.innerHTML = '<div class="empty-state">暂无文章</div>';
+            else {
+                ac.innerHTML = arts.map(function(a){ return renderContentCard(a, 'article'); }).join('');
+                bindClicks('articlesContainer', '.article-card', arts);
+            }
+
+            // 卡片
+            var cards = [];
+            if (idx.cards) for (var p of idx.cards) { var c = await loadMarkdownArticle(p); if(c) cards.push(c); }
+            var cc = document.getElementById('cardsContainer');
+            if (cards.length === 0) cc.innerHTML = '<div class="empty-state">暂无卡片</div>';
+            else {
+                cc.innerHTML = cards.map(function(c){ return renderContentCard(c, 'card'); }).join('');
+                bindClicks('cardsContainer', '.card-item', cards);
+            }
+
+            // 文件
+            var files = [];
+            if (idx.files) for (var p of idx.files) { var f = await loadMarkdownArticle(p); if(f) files.push(f); }
+            var fc = document.getElementById('filesContainer');
+            if (files.length === 0) fc.innerHTML = '<div class="empty-state">暂无文件</div>';
+            else {
+                fc.innerHTML = files.map(function(f){ return renderContentCard(f, 'file'); }).join('');
+                bindClicks('filesContainer', '.file-item', files);
+            }
+        }).catch(function(e) { console.warn('索引加载失败', e); });
+    });
+</script>
+
+<!-- 悬浮迷你播放器卡片 -->
+<div id="miniPlayerCard" class="mini-player-card" title="打开播放器">
+        <div class="mini-cover" id="miniOpenBtn" title="打开大播放器"><i class="fas fa-compact-disc"></i></div>
+        <div class="mini-text" id="miniSongName" style="cursor:pointer;" title="点击播放/暂停">鸿渚音乐</div>
+        <div class="mini-wave" id="miniPlayToggle" style="cursor:pointer;" title="点击播放/暂停">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+
+<script>
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        var miniCard = document.getElementById('miniPlayerCard');
+        var openBtn = document.getElementById('miniOpenBtn');
+        var playToggle = document.getElementById('miniPlayToggle');
+        var songNameEl = document.getElementById('miniSongName');
+        var playerIframe = document.getElementById('playerIframe');
+        var playerBtn = document.getElementById('playerToggleBtn');
+
+        // 1. 点击封面：打开大播放器
+        if (openBtn && playerBtn) {
+            openBtn.onclick = function() { playerBtn.click(); };
+        }
+
+        // 2. 点击歌名或音波：发送启停指令
+        var sendToggle = function() {
+            if (playerIframe && playerIframe.contentWindow) {
+                playerIframe.contentWindow.postMessage({ type: 'togglePlayFromParent' }, '*');
+            }
+        };
+        if (playToggle) playToggle.onclick = sendToggle;
+        if (songNameEl) songNameEl.onclick = sendToggle;
+
+        // 3. 监听播放器发来的状态更新
+        window.addEventListener('message', function(e) {
+            if (!e.data) return;
+            if (e.data.type === 'playerStateUpdate') {
+                if (e.data.isPlaying) {
+                    miniCard.classList.add('playing');
+                } else {
+                    miniCard.classList.remove('playing');
+                }
+                if (songNameEl) {
+                    // 如果歌名太长，做一下截断
+                    var name = e.data.songName;
+                    songNameEl.innerText = name.length > 10 ? name.substring(0, 10) + '...' : name;
+                }
+            }
+        });
+    });
+    
+</script>
+</body>
+</html>

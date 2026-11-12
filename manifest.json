@@ -1,0 +1,10 @@
+{
+  "name": "鸿渚の灵质空间",
+  "short_name": "灵质空间",
+  "description": "鸿渚的个人资源分享与技术博客",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f4f6fa",
+  "theme_color": "#06b6d4",
+  "icons": []
+}

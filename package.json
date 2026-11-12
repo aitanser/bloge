@@ -1,0 +1,12 @@
+{
+  "name": "hongzhu-space-backend",
+  "version": "1.0.0",
+  "description": "鸿渚の灵质空间 本地微后端与管理后台",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "author": "Hongzhu",
+  "license": "MIT"
+}

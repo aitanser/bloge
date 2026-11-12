@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据管理后台 - 鸿渚の灵质空间</title>
+    <!-- 引入 Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .header h2 { display: flex; align-items: center; gap: 10px; margin: 0; color: #38bdf8; }
+        select, input, textarea { background: #1e293b; color: #fff; border: 1px solid #334155; padding: 10px; border-radius: 6px; font-family: monospace; font-size: 14px; outline: none; transition: border-color 0.2s; }
+        select:focus, input:focus, textarea:focus { border-color: #0ea5e9; }
+        textarea { width: 100%; height: 500px; resize: vertical; line-height: 1.5; box-sizing: border-box; }
+        button { display: inline-flex; align-items: center; gap: 6px; background: #0ea5e9; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s; }
+        button:hover { background: #0284c7; }
+        button.btn-save { background: #10b981; }
+        button.btn-save:hover { background: #059669; }
+        .status { margin-top: 10px; font-size: 14px; color: #94a3b8; display: flex; align-items: center; gap: 6px; min-height: 20px; }
+        .status.success { color: #10b981; }
+        .status.error { color: #ef4444; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h2><i class="fas fa-gear"></i> 数据管理后台</h2>
+        <div style="display: flex; gap: 10px;">
+            <input type="password" id="token" placeholder="输入 Token" style="width: 150px;">
+            <button onclick="loadData()"><i class="fas fa-rotate-right"></i> 加载</button>
+            <button onclick="saveData()" class="btn-save"><i class="fas fa-floppy-disk"></i> 保存</button>
+        </div>
+    </div>
+    <div style="margin-bottom: 10px;">
+        <select id="dataType" onchange="loadData()">
+            <option value="quotes">灵质投影 (quotes)</option>
+            <option value="friends">友情链接 (friends)</option>
+            <option value="wallpapers">图片库 (wallpapers)</option>
+            <option value="emojis">表情包 (emojis)</option>
+            <option value="notifications">小纸条 (notifications)</option>
+        </select>
+    </div>
+    <textarea id="jsonEditor" placeholder="点击加载数据..." spellcheck="false"></textarea>
+    <div class="status" id="status"></div>
+</div>
+<script>
+    const statusEl = document.getElementById('status');
+
+    function setStatus(text, type = '') {
+        statusEl.className = 'status ' + type;
+        if (type === 'success') {
+            statusEl.innerHTML = '<i class="fas fa-circle-check"></i> ' + text;
+        } else if (type === 'error') {
+            statusEl.innerHTML = '<i class="fas fa-circle-xmark"></i> ' + text;
+        } else {
+            statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + text;
+        }
+    }
+
+    async function loadData() {
+        const type = document.getElementById('dataType').value;
+        setStatus('加载中...');
+        try {
+            const res = await fetch('/api/data/' + type);
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const data = await res.json();
+            document.getElementById('jsonEditor').value = JSON.stringify(data, null, 2);
+            setStatus('加载成功', 'success');
+        } catch(e) {
+            setStatus('加载失败: ' + e.message, 'error');
+        }
+    }
+
+    async function saveData() {
+        const type = document.getElementById('dataType').value;
+        const token = document.getElementById('token').value || 'hongzhu123';
+        const content = document.getElementById('jsonEditor').value;
+        setStatus('保存中...');
+        try {
+            const res = await fetch('/api/data/' + type, {
+                method: 'POST',
+                headers: { 'Authorization': token, 'Content-Type': 'application/json' },
+                body: content
+            });
+            if (res.ok) {
+                setStatus('保存成功', 'success');
+            } else {
+                setStatus('保存失败: 权限验证未通过或数据格式错误', 'error');
+            }
+        } catch(e) {
+            setStatus('保存失败: ' + e.message, 'error');
+        }
+    }
+
+    // 初始化时自动加载
+    loadData();
+</script>
+</body>
+</html>
