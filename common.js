@@ -53,6 +53,22 @@ async function loadLayout() {
         if (hr.ok) document.body.insertAdjacentHTML('afterbegin', await hr.text());
         if (fr.ok) document.body.insertAdjacentHTML('beforeend', await fr.text());
         markActiveNav();
+        // 导航“更多”下拉
+        (function bindMoreMenu() {
+            const moreBtn = document.getElementById('moreMenuBtn');
+            const morePanel = document.getElementById('moreMenuPanel');
+            if (!moreBtn || !morePanel) return;
+            moreBtn.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                morePanel.classList.toggle('show');
+            };
+            document.addEventListener('click', (e) => {
+                if (!moreBtn.contains(e.target) && !morePanel.contains(e.target)) {
+                    morePanel.classList.remove('show');
+                }
+            });
+        })();
         initThemeTools();
         initPlayer();
     } catch (e) { console.warn('Layout load failed'); }

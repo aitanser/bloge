@@ -261,3 +261,30 @@ body[data-glass="true"] .latest-video-card {
 /* 侧边栏的项目链接与小纸条 */
 [data-theme="dark"] .project-links a { color: var(--primary-400) !important; }
 [data-theme="dark"] .notif-item { color: #cbd5e1 !important; border-left-color: var(--primary-500) !important; }
+
+/* ===== 导航“更多”下拉 ===== */
+.nav-more { position: relative; }
+.nav-more-panel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 160px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    padding: 6px;
+    z-index: 300;
+}
+.nav-more-panel.show { display: block; }
+.nav-more-panel a {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 12px; border-radius: 8px;
+    color: var(--text-title); text-decoration: none; font-size: .88rem;
+    transition: var(--transition);
+}
+.nav-more-panel a:hover {
+    background: rgba(6,182,212,.1);
+    color: var(--primary-600);
+}
