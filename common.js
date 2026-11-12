@@ -294,3 +294,42 @@ window.selectLanguage = function(lang) {
     const panel = document.getElementById('langMenuPanel');
     if (panel) panel.style.display = 'none';
 };
+
+
+/* ================= 文章详情弹窗（fix-pages 补充） ================= */
+function simpleMarkdown(md) {
+    var html = escapeHtml(md || '');
+    html = html.replace(/^### (.*)$/gm, '<h3>$1</h3>');
+    html = html.replace(/^## (.*)$/gm, '<h2>$1</h2>');
+    html = html.replace(/^# (.*)$/gm, '<h1>$1</h1>');
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    html = html.replace(/^- (.*)$/gm, '<li>$1</li>');
+    html = html.replace(/(<li>[\s\S]*?<\/li>)/g, '<ul>$1</ul>');
+    html = html.replace(/^&gt; (.*)$/gm, '<blockquote>$1</blockquote>');
+    html = html.replace(/\n/g, '<br>');
+    return html;
+}
+
+function showArticleDetail(title, date, content, meta) {
+    var overlay = document.getElementById('articleDetailOverlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'articleDetailOverlay';
+        overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:30000;display:flex;align-items:center;justify-content:center;padding:20px;';
+        overlay.innerHTML =
+            '<div style="background:var(--bg-card);color:var(--text-title);max-width:900px;width:100%;max-height:85vh;overflow:auto;border-radius:16px;padding:2rem;position:relative;border:1px solid var(--border-light);">' +
+            '<button id="articleDetailClose" style="position:absolute;top:12px;right:12px;border:none;background:transparent;font-size:1.6rem;cursor:pointer;color:var(--text-muted);">&times;</button>' +
+            '<h1 id="articleDetailTitle" style="margin-bottom:.5rem;font-size:1.5rem;"></h1>' +
+            '<div id="articleDetailDate" style="color:var(--text-muted);font-size:.85rem;margin-bottom:1.5rem;"></div>' +
+            '<div id="articleDetailBody" style="line-height:1.9;font-size:.95rem;"></div>' +
+            '</div>';
+        document.body.appendChild(overlay);
+        overlay.querySelector('#articleDetailClose').onclick = function () { overlay.remove(); };
+        overlay.addEventListener('click', function (e) { if (e.target === overlay) overlay.remove(); });
+    }
+    document.getElementById('articleDetailTitle').textContent = title || '无标题';
+    document.getElementById('articleDetailDate').textContent = date || '';
+    document.getElementById('articleDetailBody').innerHTML = simpleMarkdown(content || '');
+    overlay.scrollTop = 0;
+}

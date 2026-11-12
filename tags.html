@@ -1,33 +1,119 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>标签 · 鸿渚の灵质空间</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/fontawesome/all.min.css">
-    <link rel="stylesheet" href="common.css">
-    <script>
-        document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
-        document.documentElement.style.setProperty('--glass-alpha', (localStorage.getItem('hz_glass_alpha') || 65) / 100);
-    </script>
-    <style>
-        /* 强行约束顶部按钮尺寸 */
-        .nav-actions .icon-btn { width: 32px !important; height: 32px !important; padding: 0 !important; display: inline-flex !important; align-items: center; justify-content: center; }
-        .nav-actions .icon-btn i { font-size: 0.95rem !important; }
-        .main-container { max-width: 1200px; margin: 90px auto 60px; padding: 0 1.5rem; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>标签 · 鸿渚の灵质空间</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="common.css">
+<script>
+  document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+  document.documentElement.setAttribute('data-color-theme', localStorage.getItem('colorTheme') || 'default');
+  document.documentElement.style.setProperty('--glass-alpha', (localStorage.getItem('hz_glass_alpha') || 65) / 100);
+</script>
+<style>
+.main-container { max-width: 1100px; margin: 90px auto 60px; padding: 0 1.5rem; }
+.page-title { font-size: 1.6rem; font-weight: 700; color: var(--primary-600); margin-bottom: 1.2rem; display: flex; align-items: center; gap: .5rem; }
+.tag-cloud { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 1.6rem; }
+.tag-chip { padding: 6px 14px; border-radius: 40px; border: 1px solid var(--border-light); background: var(--bg-card); color: var(--text-title); font-size: .85rem; cursor: pointer; transition: var(--transition); }
+.tag-chip:hover, .tag-chip.active { background: var(--primary-500); border-color: var(--primary-500); color: #fff; }
+.tag-count { opacity: .7; margin-left: 4px; font-size: .75rem; }
+.item-list { display: grid; gap: .9rem; }
+.item-card { padding: 1rem 1.2rem; border: 1px solid var(--border-light); border-radius: 14px; background: var(--bg-card); cursor: pointer; transition: var(--transition); }
+.item-card:hover { border-color: var(--primary-400); box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+.item-card h3 { font-size: 1rem; margin-bottom: .35rem; color: var(--text-title); }
+.item-card p { font-size: .85rem; color: var(--text-muted); }
+.item-card .item-date { font-size: .75rem; color: var(--text-muted); margin-bottom: .3rem; }
+.timeline { position: relative; padding-left: 1.6rem; border-left: 2px solid var(--border-light); }
+.timeline-item { position: relative; margin-bottom: 1.4rem; }
+.timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: .35rem; width: 10px; height: 10px; border-radius: 50%; background: var(--primary-500); border: 2px solid var(--bg-page); }
+.status-grid { display: grid; gap: .5rem; }
+.status-row { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .6rem .9rem; background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 10px; font-size: .85rem; }
+.status-ok { color: #10b981; font-weight: 700; }
+.status-fail { color: #ef4444; font-weight: 700; }
+.status-path { color: var(--text-muted); font-family: monospace; font-size: .8rem; word-break: break-all; }
+</style>
 </head>
 <body>
 <div class="bg-layer"></div>
-
-<!-- 硬编码导航栏（全站通用） -->
-<main class="main-container">
-    <div style="text-align:center;padding:4rem;background:var(--bg-card);border-radius:20px;border:1px solid var(--border-light);"><h2>tags 页面维护中</h2></div>
+<main class="main-container" id="pageMain">
+    <h2 class="page-title"><i class="fas fa-tags"></i> 标签</h2>
+    <div id="tagCloud" class="tag-cloud"><div class="loading-skeleton">加载中...</div></div>
+    <div id="tagItems" class="item-list"></div>
 </main>
-
-<!-- 页脚 -->
-
 <script src="common.js"></script>
+<script>
+
+(function () {
+    var cloud = document.getElementById('tagCloud');
+    var list = document.getElementById('tagItems');
+
+    function parseTags(v) {
+        if (Array.isArray(v)) return v;
+        if (!v) return [];
+        return String(v).replace(/^\[|\]$/g, '').split(',').map(function (s) {
+            return s.replace(/^["'\s]+|["'\s]+$/g, '');
+        }).filter(Boolean);
+    }
+
+    (async function () {
+        var idx = await loadJSON('data-index.json');
+        var paths = [].concat(idx.articles || [], idx.cards || [], idx.files || []);
+        var items = [];
+        for (var i = 0; i < paths.length; i++) {
+            var a = await loadMarkdownArticle(paths[i]);
+            if (a) items.push({ path: paths[i], meta: a.meta, content: a.content });
+        }
+
+        var map = {};
+        items.forEach(function (it) {
+            parseTags(it.meta.tags).forEach(function (t) {
+                if (!map[t]) map[t] = [];
+                map[t].push(it);
+            });
+        });
+
+        var tags = Object.keys(map).sort(function (a, b) { return map[b].length - map[a].length; });
+        if (!tags.length) {
+            cloud.innerHTML = '<div class="empty-state">暂无标签</div>';
+            return;
+        }
+
+        cloud.innerHTML = '<span class="tag-chip active" data-tag="__all__">全部<span class="tag-count">' + items.length + '</span></span>' +
+            tags.map(function (t) {
+                return '<span class="tag-chip" data-tag="' + escapeHtml(t) + '">' + escapeHtml(t) + '<span class="tag-count">' + map[t].length + '</span></span>';
+            }).join('');
+
+        function render(tag) {
+            var arr = tag === '__all__' ? items : (map[tag] || []);
+            list.innerHTML = arr.map(function (it) {
+                return '<div class="item-card" data-idx="' + items.indexOf(it) + '">' +
+                    '<div class="item-date">' + escapeHtml(it.meta.date || '') + '</div>' +
+                    '<h3>' + escapeHtml(it.meta.title || '无标题') + '</h3>' +
+                    '<p>' + escapeHtml(it.meta.summary || it.meta.description || '') + '</p>' +
+                    '</div>';
+            }).join('');
+            list.querySelectorAll('.item-card').forEach(function (el) {
+                el.onclick = function () {
+                    var it = items[Number(el.dataset.idx)];
+                    showArticleDetail(it.meta.title, it.meta.date, it.content, it.meta);
+                };
+            });
+        }
+
+        cloud.querySelectorAll('.tag-chip').forEach(function (chip) {
+            chip.onclick = function () {
+                cloud.querySelectorAll('.tag-chip').forEach(function (c) { c.classList.remove('active'); });
+                chip.classList.add('active');
+                render(chip.dataset.tag);
+            };
+        });
+
+        render('__all__');
+    })();
+})();
+
+</script>
 </body>
 </html>
