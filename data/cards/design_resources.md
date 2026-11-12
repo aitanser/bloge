@@ -2,7 +2,7 @@
 id: "design_resources"
 resource_id: "design_resources"
 title: "设计资源包"
-description: "包含 UI 素材、图标、样机等设计资源。"
+summary: "包含 UI 素材、图标、样机等设计资源。"
 category: "设计素材"
 type: "file"
 icon: "fas fa-file-archive"

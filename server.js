@@ -32,7 +32,9 @@ const server = http.createServer((req, res) => {
     // API: 读写数据
     if (pathname.startsWith('/api/data/')) {
         const name = pathname.replace('/api/data/', '');
-        const dataPath = path.join(__dirname, 'data', name + '.json');
+        const primaryPath = path.join(__dirname, 'data', name + '.json');
+        const fallbackPath = path.join(__dirname, name + '.json');
+        const dataPath = fs.existsSync(primaryPath) ? primaryPath : fallbackPath;
         if (req.method === 'GET') {
             fs.readFile(dataPath, 'utf8', (err, data) => {
                 if (err) { res.writeHead(404); res.end('Not found'); return; }

@@ -357,7 +357,7 @@
     async function loadPlaylist() {
         try {
             // 优先请求微后端扫描接口
-            let res = await fetch('/api/songs');
+            let res = await fetch('api/songs');
             if (!res.ok) throw new Error('API failed');
             let data = await res.json();
             
@@ -368,8 +368,8 @@
             
             masterList = data.map(item => ({
                 name: item.name,
-                mp3Url: '/Vocaloid/' + encodeURIComponent(item.name) + '.mp3',
-                coverUrl: '/Vocaloid/png/' + encodeURIComponent(item.name) + '.png'
+                mp3Url: 'Vocaloid/' + encodeURIComponent(item.name) + '.mp3',
+                coverUrl: 'Vocaloid/png/' + encodeURIComponent(item.name) + '.png'
             }));
             
             displayList = [...masterList];
@@ -382,8 +382,8 @@
                 let data = await res.json();
                 masterList = data.map(item => ({
                     name: item.name,
-                    mp3Url: '/Vocaloid/' + encodeURIComponent(item.name) + '.mp3',
-                    coverUrl: '/Vocaloid/png/' + encodeURIComponent(item.name) + '.png'
+                    mp3Url: 'Vocaloid/' + encodeURIComponent(item.name) + '.mp3',
+                    coverUrl: 'Vocaloid/png/' + encodeURIComponent(item.name) + '.png'
                 }));
                 displayList = [...masterList];
                 renderPlaylist();

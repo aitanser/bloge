@@ -6,7 +6,7 @@ fileSize: "256.8 MB"
 fileType: "zip"
 downloadUrl: "https://example-cdn.com/downloads/design-resources-v2.1.zip"  # 外部下载链接
 password: ""  # 解压密码（如有）
-description: "专业UI设计师必备资源集合，定期更新维护。"
+summary: "专业UI设计师必备资源集合，定期更新维护。"
 ---
 
 ## 资源包内容详情

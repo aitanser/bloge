@@ -2,7 +2,7 @@
 id: "ai_painting"
 resource_id: "ai_painting"
 title: "AI 绘画指南"
-description: "Stable Diffusion 与 Midjourney 从入门到精通。"
+summary: "Stable Diffusion 与 Midjourney 从入门到精通。"
 category: "教程"
 type: "article"
 icon: "fas fa-book-open"

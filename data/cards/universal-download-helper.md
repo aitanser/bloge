@@ -2,7 +2,7 @@
 id: "universal_download_helper"
 resource_id: "universal_download_helper"
 title: "Universal Download Helper"
-description: "通用下载助手，一键抓取网页中的图片、视频、音频等资源。"
+summary: "通用下载助手，一键抓取网页中的图片、视频、音频等资源。"
 category: "浏览器扩展"
 type: "software"
 icon: "fas fa-cloud-download-alt"
